@@ -1,6 +1,6 @@
 ﻿namespace ProjectPerunAPI.Services
 {
-    public class UserService
+    public interface IOrdersService
     {
     }
 }

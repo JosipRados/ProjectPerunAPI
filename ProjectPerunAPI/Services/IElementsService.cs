@@ -1,6 +1,6 @@
 ﻿namespace ProjectPerunAPI.Services
 {
-    public class ElementsService
+    public interface IElementsService
     {
     }
 }
