@@ -23,11 +23,19 @@ namespace ProjectPerunAPI.Controllers
         [HttpGet]
         public ActionResult<string> GetAllStorage()
         {
-            var invocationObject = _storageService.GetAllElements();
+            var invocationObject = _storageService.GetAllStorage();
             invocationObject.TableName = "StorageMaterial";
             var json = JsonConvert.SerializeObject(invocationObject);
             return json;
-            
-        } 
+
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<string> GetOneMaterial(int id)
+        {
+            var invocationObject = _storageService.GetOneMaterial(id);
+            var json = JsonConvert.SerializeObject(invocationObject);
+            return json;
+        }
     }
 }

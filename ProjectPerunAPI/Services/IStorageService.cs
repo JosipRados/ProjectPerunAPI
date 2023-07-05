@@ -4,6 +4,7 @@ namespace ProjectPerunAPI.Services
 {
     public interface IStorageService
     {
-        public DataTable GetAllElements();
+        public DataTable GetAllStorage();
+        DataTable GetOneMaterial(int id);
     }
 }

@@ -10,9 +10,14 @@ namespace ProjectPerunAPI.Services.Implementation
         {
             _storageRepository = storageRepository;
         }
-        public DataTable GetAllElements()
+        public DataTable GetAllStorage()
         {
             return _storageRepository.GetAllStorageDatabase();
+        }
+
+        public DataTable GetOneMaterial(int id)
+        {
+            return _storageRepository.GetOneMaterialDatabase(id);
         }
     }
 }
