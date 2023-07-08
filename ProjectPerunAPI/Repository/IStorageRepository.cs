@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using ProjectPerunAPI.Models;
+using System.Data;
 
 namespace ProjectPerunAPI.Repository
 {
@@ -6,5 +7,8 @@ namespace ProjectPerunAPI.Repository
     {
         DataTable GetAllStorageDatabase();
         DataTable GetOneMaterialDatabase(int id);
+        DataTable UpdateOneMaterialDatabasePrepare(MaterialModel materialData);
+        DataTable UpdateOneMaterialDatabaseCheck(int importBatchNumber);
+        DataTable UpdateOneMaterialDatabaseImport(int importBatchNumber);
     }
 }

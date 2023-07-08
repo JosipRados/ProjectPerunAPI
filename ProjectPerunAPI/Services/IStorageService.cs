@@ -1,10 +1,12 @@
-﻿using System.Data;
+﻿using ProjectPerunAPI.Models;
+using System.Data;
 
 namespace ProjectPerunAPI.Services
 {
     public interface IStorageService
     {
-        public DataTable GetAllStorage();
-        DataTable GetOneMaterial(int id);
+        ResponseModel GetAllStorage();
+        ResponseModel GetOneMaterial(int id);
+        string UpdateMaterialData(MaterialModel materialData);
     }
 }

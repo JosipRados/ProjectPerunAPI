@@ -1,4 +1,5 @@
-﻿using ProjectPerunAPI.RepositoryAccess;
+﻿using ProjectPerunAPI.Models;
+using ProjectPerunAPI.RepositoryAccess;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -34,6 +35,36 @@ namespace ProjectPerunAPI.Repository
 
             SqlAccessManager.SelectData(_conn, CommandType.StoredProcedure, oneMaterial, "spGetOneStorage", parameters);
             return oneMaterial;
+        }
+
+        public DataTable UpdateOneMaterialDatabasePrepare(MaterialModel materialData)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@MaterialData", materialData, TypeParametar.Structured);
+
+            SqlAccessManager.SelectData(_conn, CommandType.StoredProcedure, returnDatabase, "spUpdateMaterialData_01Prepare", parameters);
+            return returnDatabase;
+        }
+
+        public DataTable UpdateOneMaterialDatabaseCheck(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            SqlAccessManager.SelectData(_conn, CommandType.StoredProcedure, returnDatabase, "spUpdateMaterialData_02Check", parameters);
+            return returnDatabase;
+        }
+
+        public DataTable UpdateOneMaterialDatabaseImport(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            SqlAccessManager.SelectData(_conn, CommandType.StoredProcedure, returnDatabase, "spUpdateMaterialData_03Import", parameters);
+            return returnDatabase;
         }
     }
 }
