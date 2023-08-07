@@ -1,7 +1,9 @@
 using ProjectPerunAPI;
 using ProjectPerunAPI.Repository;
+using ProjectPerunAPI.Repository.Implementation;
 using ProjectPerunAPI.Services;
 using ProjectPerunAPI.Services.Implementation;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +19,13 @@ builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddScoped<IProjectsService, ProjectsService>();
 builder.Services.AddScoped<IShiftsService, ShiftsService>();
 builder.Services.AddScoped<IStorageService, StorageService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IStorageRepository, StorageRepository>();
+builder.Services.AddScoped<IElementsRepository, ElementsRepository>();
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+builder.Services.AddScoped<IShiftsRepository, ShiftsRepository>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 
 var app = builder.Build();

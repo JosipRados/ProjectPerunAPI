@@ -5,8 +5,10 @@ namespace ProjectPerunAPI.Services
 {
     public interface IStorageService
     {
-        ResponseModel GetAllStorage();
-        ResponseModel GetOneMaterial(int id);
-        string UpdateMaterialData(MaterialModel materialData);
+        Task<ResponseModel> DeleteMaterialData(List<MaterialTransactionModel> materialData);
+        Task<ResponseModel> GetAllStorage();
+        Task<ResponseModel> GetOneMaterial(int id);
+        Task<ResponseModel> InsertMaterialData(List<MaterialTransactionModel>? materialData);
+        Task<ResponseModel> UpdateMaterialData(List<MaterialTransactionModel> materialData);
     }
 }

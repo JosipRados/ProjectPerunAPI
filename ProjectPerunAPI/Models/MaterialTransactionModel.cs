@@ -1,14 +1,13 @@
 ﻿namespace ProjectPerunAPI.Models
 {
-    public class MaterialModel
+    public class MaterialTransactionModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Code { get; set; }
         public string? TransactionType { get; set; }
 
-        public int PackageQuantity { get; set; }
-        public int CurrentQuantity { get; set; }
+        public int Quantity { get; set; }
         public decimal Price { get; set; }
         public int? ElementID { get; set; }
         public string? Type { get; set; }

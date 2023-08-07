@@ -10,6 +10,11 @@ namespace ProjectPerunAPI.RepositoryAccess
         {
             SelectData(conn, commandType, dataTable, commandText, new DataAccessParameterList());
         }
+
+        public static async Task SelectDataAsync(SqlConnection conn, CommandType commandType, DataTable dataTable, string commandText)
+        {
+            await SelectDataAsync(conn, commandType, dataTable, commandText, new DataAccessParameterList());
+        }
         /// <summary>Puni DataTable podacima iz baze preko upita ili storane procedure.</summary>
         /// <remarks>Podaci se spremaju u parametar tipa DataTable, nema povratne vrijednosti metode.
         /// <para>Metoda je dostupna samo unutar DataAccess projekta.</para>
@@ -27,10 +32,31 @@ namespace ProjectPerunAPI.RepositoryAccess
                 sqlCommand.CommandType = commandType;
 
                 PostaviParametre(parametri, sqlCommand);
-
+                
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
 
                 dataAdapter.Fill(dataTable);
+
+                VratiVrijednostiParametrima(parametri, sqlCommand);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static async Task SelectDataAsync(SqlConnection conn, CommandType commandType, DataTable dataTable, string commandText, DataAccessParameterList parametri)
+        {
+            try
+            {
+                SqlCommand sqlCommand = new SqlCommand(commandText, conn);
+                sqlCommand.CommandType = commandType;
+
+                PostaviParametre(parametri, sqlCommand);
+
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
+
+                await Task.Run(() => dataAdapter.Fill(dataTable));
 
                 VratiVrijednostiParametrima(parametri, sqlCommand);
             }

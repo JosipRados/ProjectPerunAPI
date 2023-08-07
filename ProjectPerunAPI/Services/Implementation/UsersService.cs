@@ -3,58 +3,59 @@ using ProjectPerunAPI.Models;
 using ProjectPerunAPI.Repository;
 using System.Data;
 
+
 namespace ProjectPerunAPI.Services.Implementation
 {
-    public class OrdersService : IOrdersService
+    public class UsersService : IUsersService
     {
-        IOrdersRepository _ordersRepository;
-        public OrdersService(IOrdersRepository ordersRepository)
+        IUsersRepository _usersRepository;
+        public UsersService(IUsersRepository usersRepository)
         {
-            _ordersRepository = ordersRepository;
+            _usersRepository = usersRepository;
         }
 
-        public async Task<ResponseModel> GetOrders()
+        public async Task<ResponseModel> GetUsers()
         {
             DataTable resultDatabase;
-            resultDatabase = await _ordersRepository.GetOrdersDatabase();
+            resultDatabase = await _usersRepository.GetUsersDatabase();
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
                 return new ResponseModel(false, "Unable to get elements from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
 
-        public async Task<ResponseModel> GetOneOrder(int id)
+        public async Task<ResponseModel> GetOneUser(int id)
         {
             DataTable resultDatabase;
-            resultDatabase = await _ordersRepository.GetOneOrderDatabase(id);
+            resultDatabase = await _usersRepository.GetOneUserDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get order " + id + " from database.", "");
+                return new ResponseModel(false, "Unable to get User " + id + " from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
 
-        public async Task<ResponseModel> UpdateOrder(OrderModel orderData)
+        public async Task<ResponseModel> UpdateUser(UserModel userData)
         {
             DataTable resultDatabase;
-            resultDatabase = await _ordersRepository.UpdateOrderDatabase(orderData);
+            resultDatabase = await _usersRepository.UpdateUserDatabase(userData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get orders from database.", "");
+                return new ResponseModel(false, "Unable to get Users from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
 
-        public async Task<ResponseModel> InsertOrder(OrderModel orderData)
+        public async Task<ResponseModel> InsertUser(UserModel userData)
         {
             DataTable resultDatabase;
-            resultDatabase = await _ordersRepository.InsertOrderDatabase(orderData);
+            resultDatabase = await _usersRepository.InsertUserDatabase(userData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get orders from database.", "");
+                return new ResponseModel(false, "Unable to get Users from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
 
-        public async Task<ResponseModel> DeleteOrder(int id)
+        public async Task<ResponseModel> DeleteUser(int id)
         {
             DataTable resultDatabase;
-            resultDatabase = await _ordersRepository.DeleteOrderDatabase(id);
+            resultDatabase = await _usersRepository.DeleteUserDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get order " + id + " from database.", "");
+                return new ResponseModel(false, "Unable to get User " + id + " from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
     }

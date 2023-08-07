@@ -1,0 +1,130 @@
+﻿using ProjectPerunAPI.Models;
+using ProjectPerunAPI.RepositoryAccess;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using static ProjectPerunAPI.RepositoryAccess.TypeParameter;
+
+namespace ProjectPerunAPI.Repository.Implementation
+{
+    public class StorageRepository : IStorageRepository
+    {
+        private readonly IConfiguration Configuration;
+        private readonly string connectionString;
+        private SqlConnection _conn;
+
+        public StorageRepository(IConfiguration configuration)
+        {
+            Configuration = configuration;
+            connectionString = Configuration["ConnectionStrings:MainDB"];
+            _conn = new SqlConnection(connectionString);
+        }
+
+        public async Task<DataTable> GetStorageDatabase()
+        {
+            DataTable returnDatabase = new DataTable();
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetAllStorage");
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> GetMaterialDatabase(int id)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@MaterialID", id, TypeParametar.BigInt);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetOneStorage", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> UpdateMaterialDatabasePrepare(List<MaterialTransactionModel> materialData)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@MaterialData", materialData, TypeParametar.Structured);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spUpdateMaterialData_01Prepare", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> UpdateMaterialDatabaseCheck(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spUpdateMaterialData_02Check", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> UpdateMaterialDatabaseImport(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spUpdateMaterialData_03Import", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> InsertMaterialDatabasePrepare(List<MaterialTransactionModel> materialData)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@MaterialData", materialData, TypeParametar.Structured);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spInsertMaterialData_01Prepare", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> InsertMaterialDatabaseCheck(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spInsertMaterialData_02Check", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> InsertMaterialDatabaseImport(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spInsertMaterialData_03Import", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> DeleteMaterialDatabasePrepare(List<MaterialTransactionModel> materialData)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@MaterialData", materialData, TypeParametar.Structured);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spDeleteMaterialData_01Prepare", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> DeleteMaterialDatabaseCheck(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spDeleteMaterialData_02Check", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> DeleteMaterialDatabaseImport(int importBatchNumber)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@ImportBatchNumber", importBatchNumber, TypeParametar.BigInt);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spDeleteMaterialData_03Import", parameters);
+            return returnDatabase;
+        }
+    }
+}

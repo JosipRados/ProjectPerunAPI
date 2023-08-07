@@ -22,24 +22,33 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<ResponseModel> GetAllStorage()
+        public async Task<ActionResult<ResponseModel>> GetAllStorage()
         {
-            return _storageService.GetAllStorage();
+            return await _storageService.GetAllStorage();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<string> GetOneMaterial(int id)
+        public async Task<ActionResult<ResponseModel>> GetOneMaterial(int id)
         {
-            var serviceObject = _storageService.GetOneMaterial(id);
-            var json = JsonConvert.SerializeObject(serviceObject);
-            return json;
+            return await _storageService.GetOneMaterial(id);
         }
 
         [HttpPut]
-        public ActionResult<string> UpdateOneMaterial([FromBody] MaterialModel materialData)
+        public async Task<ActionResult<ResponseModel>> UpdateMaterial([FromBody] List<MaterialTransactionModel> materialData)
         {
-            var serviceObject = _storageService.UpdateMaterialData(materialData);
-            return "";
+            return await _storageService.UpdateMaterialData(materialData);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResponseModel>> InsertMaterialData([FromBody] MaterialWrapperModel materialData)
+        {
+            return await _storageService.InsertMaterialData(materialData.materialData);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<ResponseModel>> DeleteMaterialData([FromBody] List<MaterialTransactionModel> materialData)
+        {
+            return await _storageService.DeleteMaterialData(materialData);
         }
     }
 }
