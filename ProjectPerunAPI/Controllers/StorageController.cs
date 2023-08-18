@@ -21,10 +21,10 @@ namespace ProjectPerunAPI.Controllers
             _storageService = storageService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ResponseModel>> GetAllStorage()
+        [HttpGet("all/{pageNumber}")]
+        public async Task<ActionResult<string>> GetAllStorage(int pageNumber)
         {
-            return await _storageService.GetAllStorage();
+            return JsonConvert.SerializeObject(await _storageService.GetAllStorage());
         }
 
         [HttpGet("{id}")]
@@ -34,21 +34,21 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseModel>> UpdateMaterial([FromBody] List<MaterialTransactionModel> materialData)
+        public async Task<ActionResult<ResponseModel>> UpdateMaterial([FromBody] MaterialTransactionWrapperModel materialData)
         {
-            return await _storageService.UpdateMaterialData(materialData);
+            return await _storageService.UpdateMaterialData(materialData.materialData);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel>> InsertMaterialData([FromBody] MaterialWrapperModel materialData)
+        public async Task<ActionResult<ResponseModel>> InsertMaterialData([FromBody] MaterialTransactionWrapperModel materialData)
         {
             return await _storageService.InsertMaterialData(materialData.materialData);
         }
 
         [HttpDelete]
-        public async Task<ActionResult<ResponseModel>> DeleteMaterialData([FromBody] List<MaterialTransactionModel> materialData)
+        public async Task<ActionResult<ResponseModel>> DeleteMaterialData([FromBody] MaterialDeleteWrapperModel materialData)
         {
-            return await _storageService.DeleteMaterialData(materialData);
+            return await _storageService.DeleteMaterialData(materialData.materialData);
         }
     }
 }

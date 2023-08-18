@@ -1,4 +1,5 @@
-﻿using ProjectPerunAPI.Models;
+﻿using FastMember;
+using ProjectPerunAPI.Models;
 using ProjectPerunAPI.RepositoryAccess;
 using System.Data;
 using System.Data.Common;
@@ -33,15 +34,17 @@ namespace ProjectPerunAPI.Repository.Implementation
             DataAccessParameterList parameters = new DataAccessParameterList();
             parameters.ParametarAdd("@MaterialID", id, TypeParametar.BigInt);
 
-            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetOneStorage", parameters);
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetOneMaterial", parameters);
             return returnDatabase;
         }
 
         public async Task<DataTable> UpdateMaterialDatabasePrepare(List<MaterialTransactionModel> materialData)
         {
             DataTable returnDatabase = new DataTable();
+            DataTable dtMaterialData = ListToTableMaterialData(materialData);
+
             DataAccessParameterList parameters = new DataAccessParameterList();
-            parameters.ParametarAdd("@MaterialData", materialData, TypeParametar.Structured);
+            parameters.ParametarAdd("@MaterialData", dtMaterialData, TypeParametar.Structured);
 
             await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spUpdateMaterialData_01Prepare", parameters);
             return returnDatabase;
@@ -70,8 +73,10 @@ namespace ProjectPerunAPI.Repository.Implementation
         public async Task<DataTable> InsertMaterialDatabasePrepare(List<MaterialTransactionModel> materialData)
         {
             DataTable returnDatabase = new DataTable();
+            DataTable dtMaterialData = ListToTableMaterialData(materialData);
+
             DataAccessParameterList parameters = new DataAccessParameterList();
-            parameters.ParametarAdd("@MaterialData", materialData, TypeParametar.Structured);
+            parameters.ParametarAdd("@MaterialData", dtMaterialData, TypeParametar.Structured);
 
             await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spInsertMaterialData_01Prepare", parameters);
             return returnDatabase;
@@ -97,11 +102,13 @@ namespace ProjectPerunAPI.Repository.Implementation
             return returnDatabase;
         }
 
-        public async Task<DataTable> DeleteMaterialDatabasePrepare(List<MaterialTransactionModel> materialData)
+        public async Task<DataTable> DeleteMaterialDatabasePrepare(List<MaterialDeleteModel> materialData)
         {
             DataTable returnDatabase = new DataTable();
+            DataTable dtMaterialData = ListToTableMaterialDelete(materialData);
+
             DataAccessParameterList parameters = new DataAccessParameterList();
-            parameters.ParametarAdd("@MaterialData", materialData, TypeParametar.Structured);
+            parameters.ParametarAdd("@MaterialData", dtMaterialData, TypeParametar.Structured);
 
             await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spDeleteMaterialData_01Prepare", parameters);
             return returnDatabase;
@@ -125,6 +132,29 @@ namespace ProjectPerunAPI.Repository.Implementation
 
             await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spDeleteMaterialData_03Import", parameters);
             return returnDatabase;
+        }
+
+        /** HELPER METHODS **/
+
+        private DataTable ListToTableMaterialData(List<MaterialTransactionModel> materialData)
+        {
+            DataTable table = new DataTable();
+            using (var reader = ObjectReader.Create(materialData, "Id", "Name", "Code", "TransactionType", "Quantity", "Price", "ElementID", "Type", "WarehouseID", "LastChange",
+            "UserID", "TimeStamp", "Reserved", "OnProject", "BatchID", "ImportBatchNumber"))
+            {
+                table.Load(reader);
+            }
+            return table;
+        }
+
+        private DataTable ListToTableMaterialDelete(List<MaterialDeleteModel> materialData)
+        {
+            DataTable table = new DataTable();
+            using (var reader = ObjectReader.Create(materialData, "MaterialID", "UserID"))
+            {
+                table.Load(reader);
+            }
+            return table;
         }
     }
 }

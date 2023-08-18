@@ -6,27 +6,27 @@ using static ProjectPerunAPI.RepositoryAccess.TypeParameter;
 
 namespace ProjectPerunAPI.Repository.Implementation
 {
-    public class ElementsRepository : IElementsRepository
+    public class MaterialDataRepository : IMaterialDataRepository
     {
         private readonly IConfiguration Configuration;
         private readonly string connectionString;
         private SqlConnection _conn;
 
-        public ElementsRepository(IConfiguration configuration)
+        public MaterialDataRepository(IConfiguration configuration)
         {
             Configuration = configuration;
             connectionString = Configuration["ConnectionStrings:MainDB"];
             _conn = new SqlConnection(connectionString);
         }
 
-        public async Task<DataTable> GetElementsDatabase()
+        public async Task<DataTable> GetMaterialDataDatabase()
         {
             DataTable returnDatabase = new DataTable();
-            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetElements");
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetAllMaterialData");
             return returnDatabase;
         }
 
-        public async Task<DataTable> GetOneElementDatabase(int id)
+        public async Task<DataTable> GetOneMaterialDataDatabase(int id)
         {
             DataTable returnDatabase = new DataTable();
             DataAccessParameterList parameters = new DataAccessParameterList();
@@ -36,7 +36,7 @@ namespace ProjectPerunAPI.Repository.Implementation
             return returnDatabase;
         }
 
-        public async Task<DataTable> UpdateElementDatabase(ElementModel elementData)
+        public async Task<DataTable> UpdateMaterialDataDatabase(MaterialDataModel elementData)
         {
             DataTable returnDatabase = new DataTable();
             DataAccessParameterList parameters = new DataAccessParameterList();
@@ -46,7 +46,7 @@ namespace ProjectPerunAPI.Repository.Implementation
             return returnDatabase;
         }
 
-        public async Task<DataTable> InsertElementDatabase(ElementModel elementData)
+        public async Task<DataTable> InsertMaterialDataDatabase(MaterialDataModel elementData)
         {
             DataTable returnDatabase = new DataTable();
             DataAccessParameterList parameters = new DataAccessParameterList();
@@ -56,7 +56,7 @@ namespace ProjectPerunAPI.Repository.Implementation
             return returnDatabase;
         }
 
-        public async Task<DataTable> DeleteElementDatabase(int id)
+        public async Task<DataTable> DeleteMaterialDataDatabase(int id)
         {
             DataTable returnDatabase = new DataTable();
             DataAccessParameterList parameters = new DataAccessParameterList();

@@ -13,7 +13,8 @@ namespace ProjectPerunAPI.Repository
         Task<DataTable> InsertMaterialDatabasePrepare(List<MaterialTransactionModel> materialData);
         Task<DataTable> InsertMaterialDatabaseCheck(int importBatchNumber);
         Task<DataTable> DeleteMaterialDatabaseImport(int importBatchNumber);
-        Task<DataTable> DeleteMaterialDatabasePrepare(List<MaterialTransactionModel> materialData);
+        Task<DataTable> DeleteMaterialDatabasePrepare(List<MaterialDeleteModel> materialData);
         Task<DataTable> DeleteMaterialDatabaseCheck(int importBatchNumber);
+        Task<DataTable> InsertMaterialDatabaseImport(int importBatchNumber);
     }
 }

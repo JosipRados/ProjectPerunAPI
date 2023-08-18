@@ -6,54 +6,54 @@ using System.Data;
 
 namespace ProjectPerunAPI.Services.Implementation
 {
-    public class ElementsService : IElementsService
+    public class MaterialDataService : IMaterialDataService
     {
-        IElementsRepository _elementsRepository;
-        public ElementsService(IElementsRepository elementsRepository)
+        IMaterialDataRepository _elementsRepository;
+        public MaterialDataService(IMaterialDataRepository elementsRepository)
         {
             _elementsRepository = elementsRepository;
         }
 
-        public async Task<ResponseModel> GetElements()
+        public async Task<ResponseModelNew> GetMaterialData()
         {
             DataTable resultDatabase;
-            resultDatabase = await _elementsRepository.GetElementsDatabase();
+            resultDatabase = await _elementsRepository.GetMaterialDataDatabase();
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get elements from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get elements from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> GetOneElement(int id)
+        public async Task<ResponseModel> GetOneMaterialData(int id)
         {
             DataTable resultDatabase;
-            resultDatabase = await _elementsRepository.GetOneElementDatabase(id);
+            resultDatabase = await _elementsRepository.GetOneMaterialDataDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
                 return new ResponseModel(false, "Unable to get element " + id + " from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
 
-        public async Task<ResponseModel> UpdateElement(ElementModel elementData)
+        public async Task<ResponseModel> UpdateMaterialData(MaterialDataModel elementData)
         {
             DataTable resultDatabase;
-            resultDatabase = await _elementsRepository.UpdateElementDatabase(elementData);
+            resultDatabase = await _elementsRepository.UpdateMaterialDataDatabase(elementData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
                 return new ResponseModel(false, "Unable to get elements from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
 
-        public async Task<ResponseModel> InsertElement(ElementModel elementData)
+        public async Task<ResponseModel> InsertMaterialData(MaterialDataModel elementData)
         {
             DataTable resultDatabase;
-            resultDatabase = await _elementsRepository.InsertElementDatabase(elementData);
+            resultDatabase = await _elementsRepository.InsertMaterialDataDatabase(elementData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
                 return new ResponseModel(false, "Unable to get elements from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
         }
 
-        public async Task<ResponseModel> DeleteElement(int id)
+        public async Task<ResponseModel> DeleteMaterialData(int id)
         {
             DataTable resultDatabase;
-            resultDatabase = await _elementsRepository.DeleteElementDatabase(id);
+            resultDatabase = await _elementsRepository.DeleteMaterialDataDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
                 return new ResponseModel(false, "Unable to get element " + id + " from database.", "");
             return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
