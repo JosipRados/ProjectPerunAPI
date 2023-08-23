@@ -1,65 +1,63 @@
-﻿using Newtonsoft.Json;
-using ProjectPerunAPI.Models;
+﻿using ProjectPerunAPI.Models;
 using ProjectPerunAPI.Repository;
-using ProjectPerunAPI.Repository.Implementation;
 using System.Data;
 
 namespace ProjectPerunAPI.Services.Implementation
 {
-    public class MaterialDataService : IMaterialDataService
+    public class WarehouseService : IWarehouseService
     {
-        IMaterialDataRepository _materialsRepository;
-        public MaterialDataService(IMaterialDataRepository materialDataRepository)
+        IWarehouseRepository _warehouseRepository;
+        public WarehouseService(IWarehouseRepository warehouseRepository)
         {
-            _materialsRepository = materialDataRepository;
+            _warehouseRepository = warehouseRepository;
         }
 
-        public async Task<ResponseModelNew> GetMaterialData()
+        public async Task<ResponseModelNew> GetWarehouseData()
         {
             DataTable resultDatabase;
             try
             {
-                resultDatabase = await _materialsRepository.GetMaterialDataDatabase();
+                resultDatabase = await _warehouseRepository.GetWarehouseDatabase();
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get MaterialData from database.");
+                    throw new Exception("Unable to GET Warehouse data from database.");
                 return new ResponseModelNew(true, "", resultDatabase);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModelNew> GetOneMaterialData(int id)
+        public async Task<ResponseModelNew> GetOneWarehouseData(int id)
         {
             DataTable resultDatabase;
             try
             {
-                resultDatabase = await _materialsRepository.GetOneMaterialDataDatabase(id);
+                resultDatabase = await _warehouseRepository.GetOneWarehouseDatabase(id);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get MaterialData for ID " + id + " from database.");
+                    throw new Exception("Unable to GET Warehouse " + id + " from database.");
 
                 return new ResponseModelNew(true, "", resultDatabase);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModelNew> UpdateMaterialData(List<MaterialDataModel>? materialData)
+        public async Task<ResponseModelNew> UpdateWarehouseData(List<WarehouseDataModel>? warehouseData)
         {
             DataTable resultDatabase;
-            if (materialData == null || materialData.Count == 0)
+            if (warehouseData == null || warehouseData.Count == 0)
                 return new ResponseModelNew(false, "Request empty!", new DataTable());
 
             try
             {
-                resultDatabase = await _materialsRepository.UpdateMaterialDataDatabase(materialData);
+                resultDatabase = await _warehouseRepository.UpdateWarehouseDatabase(warehouseData);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to UPDATE MaterialData from database.");
+                    throw new Exception("Unable to UPDATE Batch data from database.");
 
                 if (resultDatabase.Rows[0]["StatusText"].ToString() != "OK")
                     throw new Exception(resultDatabase.Rows[0]["StatusText"].ToString());
@@ -72,42 +70,42 @@ namespace ProjectPerunAPI.Services.Implementation
             }
         }
 
-        public async Task<ResponseModelNew> InsertMaterialData(List<MaterialDataModel>? materialData)
+        public async Task<ResponseModelNew> InsertWarehouseData(List<WarehouseDataModel>? warehouseData)
         {
             DataTable resultDatabase;
-            if (materialData == null || materialData.Count == 0)
+            if (warehouseData == null || warehouseData.Count == 0)
                 return new ResponseModelNew(false, "Request empty!", new DataTable());
 
             try
             {
-                resultDatabase = await _materialsRepository.InsertMaterialDataDatabase(materialData);
+                resultDatabase = await _warehouseRepository.InsertWarehouseDatabase(warehouseData);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get elements from database.");
+                    throw new Exception("Unable to INSERT Batch data to database.");
 
                 if (resultDatabase.Rows[0]["StatusText"].ToString() != "OK")
                     throw new Exception(resultDatabase.Rows[0]["StatusText"].ToString());
 
                 return new ResponseModelNew(true, "", resultDatabase);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModelNew> DeleteMaterialData(List<MaterialDataModel>? materialData)
+        public async Task<ResponseModelNew> DeleteWarehouseData(List<WarehouseDataModel>? warehouseData)
         {
             DataTable resultDatabase;
-            if (materialData == null || materialData.Count == 0)
+            if (warehouseData == null || warehouseData.Count == 0)
                 return new ResponseModelNew(false, "Request empty!", new DataTable());
 
             try
             {
-                resultDatabase = await _materialsRepository.DeleteMaterialDataDatabase(materialData);
+                resultDatabase = await _warehouseRepository.DeleteWarehouseDatabase(warehouseData);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get elements from database.");
+                    throw new Exception("Unable to DELETE Batch data from database.");
 
                 if (resultDatabase.Rows[0]["StatusText"].ToString() != "OK")
                     throw new Exception(resultDatabase.Rows[0]["StatusText"].ToString());

@@ -5,10 +5,10 @@ namespace ProjectPerunAPI.Repository
 {
     public interface IMaterialDataRepository
     {
-        Task<DataTable> DeleteMaterialDataDatabase(int id);
+        Task<DataTable> DeleteMaterialDataDatabase(List<MaterialDataModel> materialData);
         Task<DataTable> GetMaterialDataDatabase();
         Task<DataTable> GetOneMaterialDataDatabase(int id);
-        Task<DataTable> InsertMaterialDataDatabase(MaterialDataModel elementData);
-        Task<DataTable> UpdateMaterialDataDatabase(MaterialDataModel elementData);
+        Task<DataTable> InsertMaterialDataDatabase(List<MaterialDataModel> materialData);
+        Task<DataTable> UpdateMaterialDataDatabase(List<MaterialDataModel> materialData);
     }
 }

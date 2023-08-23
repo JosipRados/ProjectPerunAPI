@@ -6,7 +6,7 @@ namespace ProjectPerunAPI.Repository
     public interface IStorageRepository
     {
         Task<DataTable> GetStorageDatabase();
-        Task<DataTable> GetMaterialDatabase(int id);
+        Task<DataTable> GetOneStorageDatabase(int id);
         Task<DataTable> UpdateMaterialDatabasePrepare(List<MaterialTransactionModel> materialData);
         Task<DataTable> UpdateMaterialDatabaseCheck(int importBatchNumber);
         Task<DataTable> UpdateMaterialDatabaseImport(int importBatchNumber);
@@ -16,5 +16,6 @@ namespace ProjectPerunAPI.Repository
         Task<DataTable> DeleteMaterialDatabasePrepare(List<MaterialDeleteModel> materialData);
         Task<DataTable> DeleteMaterialDatabaseCheck(int importBatchNumber);
         Task<DataTable> InsertMaterialDatabaseImport(int importBatchNumber);
+        Task<DataTable> GetLastMaterialNumberDatabase();
     }
 }

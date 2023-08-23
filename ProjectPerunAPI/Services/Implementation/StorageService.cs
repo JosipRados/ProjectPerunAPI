@@ -24,11 +24,19 @@ namespace ProjectPerunAPI.Services.Implementation
 
         public async Task<ResponseModel> GetOneMaterial(int id)
         {
-            DataTable resultDatabase = await _storageRepository.GetMaterialDatabase(id);
+            DataTable resultDatabase = await _storageRepository.GetOneStorageDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
                 return new ResponseModel(false, "Unable to retrieve material data for selected material.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
-            
+            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));  
+        }
+
+        public async Task<ResponseModelNew> GetLastMaterialNumber()
+        {
+            DataTable resultDatabase;
+            resultDatabase = await _storageRepository.GetLastMaterialNumberDatabase();
+            if (resultDatabase == null || resultDatabase.Rows.Count == 0)
+                return new ResponseModelNew(false, "Unable to get last material number from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
         public async Task<ResponseModel> UpdateMaterialData(List<MaterialTransactionModel>? materialData)

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProjectPerunAPI.Models;
 using ProjectPerunAPI.Services;
+using System.Data;
 
 namespace ProjectPerunAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/projects")]
     [ApiController]
     public class ProjectsController : ControllerBase
     {
@@ -16,33 +18,51 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseModel>> GetProjects()
+        public async Task<ActionResult<string>> GetProjects()
         {
-            return await _projectsService.GetProjects();
+            return JsonConvert.SerializeObject( await _projectsService.GetProjects());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel>> GetOneProject(int id)
+        public async Task<ActionResult<string>> GetOneProject(int id)
         {
-            return await _projectsService.GetOneProject(id);
+            return JsonConvert.SerializeObject(await _projectsService.GetOneProject(id));
+        }
+
+        [HttpGet("project-materials/{id}")]
+        public async Task<ActionResult<string>> GetProjectMaterials(int id)
+        {
+            return JsonConvert.SerializeObject(await _projectsService.GetProjectMaterials(id));
+        }
+
+        [HttpGet("materials-data/{id}")]
+        public async Task<ActionResult<string>> GetMaterialDataNotOnProject(int id)
+        {
+            return JsonConvert.SerializeObject(await _projectsService.GetMaterialDataNotOnProject(id));
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseModel>> UpdateProject([FromBody] ProjectModel projectData)
+        public async Task<ActionResult<string>> UpdateProject([FromBody] ProjectAndProjectMaterialsWrapperModel? projectData)
         {
-            return await _projectsService.UpdateProject(projectData);
+            if (projectData == null)
+                return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
+            return JsonConvert.SerializeObject(await _projectsService.UpdateProject(projectData.Projects, projectData.Materials));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel>> InsertProject([FromBody] ProjectModel projectData)
+        public async Task<ActionResult<string>> InsertProject([FromBody] ProjectAndProjectMaterialsWrapperModel? projectData)
         {
-            return await _projectsService.InsertProject(projectData);
+            if (projectData == null)
+                return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
+            return JsonConvert.SerializeObject(await _projectsService.InsertProject(projectData.Projects, projectData.Materials));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseModel>> DeleteProject(int id)
+        [HttpDelete]
+        public async Task<ActionResult<string>> DeleteProject(ProjectWrapperModel projectData)
         {
-            return await _projectsService.DeleteProject(id);
+            if (projectData == null)
+                return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
+            return JsonConvert.SerializeObject(await _projectsService.DeleteProject(projectData.Projects));
         }
     }
 }

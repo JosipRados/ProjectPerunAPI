@@ -1,65 +1,81 @@
-﻿using Newtonsoft.Json;
-using ProjectPerunAPI.Models;
+﻿using ProjectPerunAPI.Models;
 using ProjectPerunAPI.Repository;
-using ProjectPerunAPI.Repository.Implementation;
 using System.Data;
 
 namespace ProjectPerunAPI.Services.Implementation
 {
-    public class MaterialDataService : IMaterialDataService
+    public class BatchService : IBatchService
     {
-        IMaterialDataRepository _materialsRepository;
-        public MaterialDataService(IMaterialDataRepository materialDataRepository)
+        IBatchRepository _batchRepository;
+        public BatchService(IBatchRepository batchRepository)
         {
-            _materialsRepository = materialDataRepository;
+            _batchRepository = batchRepository;
         }
 
-        public async Task<ResponseModelNew> GetMaterialData()
+        public async Task<ResponseModelNew> GetBatchData()
         {
             DataTable resultDatabase;
             try
             {
-                resultDatabase = await _materialsRepository.GetMaterialDataDatabase();
+                resultDatabase = await _batchRepository.GetBatchDataDatabase();
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get MaterialData from database.");
+                    throw new Exception("Unable to GET Batch data from database.");
                 return new ResponseModelNew(true, "", resultDatabase);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModelNew> GetOneMaterialData(int id)
+        public async Task<ResponseModelNew> GetOneBatchData(int id)
         {
             DataTable resultDatabase;
             try
             {
-                resultDatabase = await _materialsRepository.GetOneMaterialDataDatabase(id);
+                resultDatabase = await _batchRepository.GetOneBatchDatabase(id);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get MaterialData for ID " + id + " from database.");
+                    throw new Exception("Unable to GET Batch " + id + " from database.");
 
                 return new ResponseModelNew(true, "", resultDatabase);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModelNew> UpdateMaterialData(List<MaterialDataModel>? materialData)
+        public async Task<ResponseModelNew> GetNewBatchNumber()
         {
             DataTable resultDatabase;
-            if (materialData == null || materialData.Count == 0)
+            try
+            {
+                resultDatabase = await _batchRepository.GetNewBatchNumber();
+
+                if (resultDatabase == null || resultDatabase.Rows.Count == 0)
+                    throw new Exception("Unable to GET New Batch id from database.");
+
+                return new ResponseModelNew(true, "", resultDatabase);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseModelNew(false, ex.Message, new DataTable());
+            }
+        }
+
+        public async Task<ResponseModelNew> UpdateBatchData(List<BatchDataModel> batchData)
+        {
+            DataTable resultDatabase;
+            if (batchData == null || batchData.Count == 0)
                 return new ResponseModelNew(false, "Request empty!", new DataTable());
 
             try
             {
-                resultDatabase = await _materialsRepository.UpdateMaterialDataDatabase(materialData);
+                resultDatabase = await _batchRepository.UpdateBatchDataDatabase(batchData);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to UPDATE MaterialData from database.");
+                    throw new Exception("Unable to UPDATE Batch data from database.");
 
                 if (resultDatabase.Rows[0]["StatusText"].ToString() != "OK")
                     throw new Exception(resultDatabase.Rows[0]["StatusText"].ToString());
@@ -72,42 +88,42 @@ namespace ProjectPerunAPI.Services.Implementation
             }
         }
 
-        public async Task<ResponseModelNew> InsertMaterialData(List<MaterialDataModel>? materialData)
+        public async Task<ResponseModelNew> InsertBatchData(List<BatchDataModel> batchData)
         {
             DataTable resultDatabase;
-            if (materialData == null || materialData.Count == 0)
+            if (batchData == null || batchData.Count == 0)
                 return new ResponseModelNew(false, "Request empty!", new DataTable());
 
             try
             {
-                resultDatabase = await _materialsRepository.InsertMaterialDataDatabase(materialData);
+                resultDatabase = await _batchRepository.InsertBatchDataDatabase(batchData);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get elements from database.");
+                    throw new Exception("Unable to INSERT Batch data to database.");
 
                 if (resultDatabase.Rows[0]["StatusText"].ToString() != "OK")
                     throw new Exception(resultDatabase.Rows[0]["StatusText"].ToString());
 
                 return new ResponseModelNew(true, "", resultDatabase);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModelNew> DeleteMaterialData(List<MaterialDataModel>? materialData)
+        public async Task<ResponseModelNew> DeleteBatchData(List<BatchDataModel>? batchData)
         {
             DataTable resultDatabase;
-            if (materialData == null || materialData.Count == 0)
+            if (batchData == null || batchData.Count == 0)
                 return new ResponseModelNew(false, "Request empty!", new DataTable());
 
             try
             {
-                resultDatabase = await _materialsRepository.DeleteMaterialDataDatabase(materialData);
+                resultDatabase = await _batchRepository.DeleteBatchDataDatabase(batchData);
 
                 if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                    throw new Exception("Unable to get elements from database.");
+                    throw new Exception("Unable to DELETE Batch data from database.");
 
                 if (resultDatabase.Rows[0]["StatusText"].ToString() != "OK")
                     throw new Exception(resultDatabase.Rows[0]["StatusText"].ToString());

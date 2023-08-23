@@ -4,10 +4,10 @@ namespace ProjectPerunAPI.Services
 {
     public interface IMaterialDataService
     {
-        Task<ResponseModel> DeleteMaterialData(int id);
+        Task<ResponseModelNew> DeleteMaterialData(List<MaterialDataModel>? materialData);
         Task<ResponseModelNew> GetMaterialData();
-        Task<ResponseModel> GetOneMaterialData(int id);
-        Task<ResponseModel> InsertMaterialData(MaterialDataModel elementData);
-        Task<ResponseModel> UpdateMaterialData(MaterialDataModel elementData);
+        Task<ResponseModelNew> GetOneMaterialData(int id);
+        Task<ResponseModelNew> InsertMaterialData(List<MaterialDataModel>? materialData);
+        Task<ResponseModelNew> UpdateMaterialData(List<MaterialDataModel>? materialData);
     }
 }

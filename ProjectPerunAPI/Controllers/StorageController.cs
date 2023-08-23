@@ -33,6 +33,12 @@ namespace ProjectPerunAPI.Controllers
             return await _storageService.GetOneMaterial(id);
         }
 
+        [HttpGet("material-number")]
+        public async Task<ActionResult<string>> GetLastMaterialNumber()
+        {
+            return JsonConvert.SerializeObject(await _storageService.GetLastMaterialNumber());
+        }
+
         [HttpPut]
         public async Task<ActionResult<ResponseModel>> UpdateMaterial([FromBody] MaterialTransactionWrapperModel materialData)
         {

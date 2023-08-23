@@ -25,27 +25,27 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel>> GetOneElement(int id)
+        public async Task<ActionResult<string>> GetOneElement(int id)
         {
-            return await _materialDataService.GetOneMaterialData(id);
+            return JsonConvert.SerializeObject( await _materialDataService.GetOneMaterialData(id));
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseModel>> UpdateElement([FromBody] MaterialDataModel elementData)
+        public async Task<ActionResult<string>> UpdateElement([FromBody] MaterialDataWrapperModel materialData)
         {
-            return await _materialDataService.UpdateMaterialData(elementData);
+            return JsonConvert.SerializeObject( await _materialDataService.UpdateMaterialData(materialData.MaterialData));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel>> InsertElement([FromBody] MaterialDataModel elementData)
+        public async Task<ActionResult<string>> InsertMaterialData([FromBody] MaterialDataWrapperModel materialData)
         {
-            return await _materialDataService.InsertMaterialData(elementData);
+            return JsonConvert.SerializeObject( await _materialDataService.InsertMaterialData(materialData.MaterialData));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseModel>> DeleteElement(int id)
+        [HttpDelete]
+        public async Task<ActionResult<string>> DeleteElement([FromBody] MaterialDataWrapperModel materialData)
         {
-            return await _materialDataService.DeleteMaterialData(id);
+            return JsonConvert.SerializeObject( await _materialDataService.DeleteMaterialData(materialData.MaterialData));
         }
     }
 }

@@ -28,13 +28,20 @@ namespace ProjectPerunAPI.Repository.Implementation
             return returnDatabase;
         }
 
-        public async Task<DataTable> GetMaterialDatabase(int id)
+        public async Task<DataTable> GetOneStorageDatabase(int id)
         {
             DataTable returnDatabase = new DataTable();
             DataAccessParameterList parameters = new DataAccessParameterList();
             parameters.ParametarAdd("@MaterialID", id, TypeParametar.BigInt);
 
             await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetOneMaterial", parameters);
+            return returnDatabase;
+        }
+
+        public async Task<DataTable> GetLastMaterialNumberDatabase()
+        {
+            DataTable returnDatabase = new DataTable();
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetLastMaterialNumber");
             return returnDatabase;
         }
 
