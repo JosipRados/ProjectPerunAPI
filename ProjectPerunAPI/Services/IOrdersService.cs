@@ -4,10 +4,11 @@ namespace ProjectPerunAPI.Services
 {
     public interface IOrdersService
     {
-        Task<ResponseModel> DeleteOrder(int id);
-        Task<ResponseModel> GetOneOrder(int id);
-        Task<ResponseModel> GetOrders();
-        Task<ResponseModel> InsertOrder(OrderModel orderData);
-        Task<ResponseModel> UpdateOrder(OrderModel orderData);
+        Task<ResponseModelNew> DeleteOrder(int id);
+        Task<ResponseModelNew> GetOneOrder(int id);
+        Task<ResponseModelNew> GetOrders(string filter);
+        Task<ResponseModelNew> InsertOrder(List<OrderModel> orderData);
+        Task<ResponseModelNew> UpdateOrder(List<OrderModel> orderData);
+        Task<ResponseModelNew> SetOrderAsFinished(int orderID);
     }
 }

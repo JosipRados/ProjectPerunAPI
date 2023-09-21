@@ -38,7 +38,7 @@ namespace ProjectPerunAPI.Controllers
         [HttpPut]
         public async Task<ActionResult<string>> UpdateBatchData([FromBody] BatchDataWrapperModel? batchData)
         {
-            if (batchData == null)
+            if (batchData == null || batchData.BatchData == null)
                 return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
             return JsonConvert.SerializeObject(await _batchService.UpdateBatchData(batchData.BatchData));
         }
@@ -46,7 +46,7 @@ namespace ProjectPerunAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> InsertBatchData([FromBody] BatchDataWrapperModel? batchData)
         {
-            if (batchData == null)
+            if (batchData == null || batchData.BatchData == null)
                 return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
             return JsonConvert.SerializeObject(await _batchService.InsertBatchData(batchData.BatchData));
         }
@@ -54,7 +54,7 @@ namespace ProjectPerunAPI.Controllers
         [HttpDelete]
         public async Task<ActionResult<string>> DeleteBatchData(BatchDataWrapperModel? batchData)
         {
-            if (batchData == null)
+            if (batchData == null || batchData.BatchData == null)
                 return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
             return JsonConvert.SerializeObject(await _batchService.DeleteBatchData(batchData.BatchData));
         }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProjectPerunAPI.Models;
 using ProjectPerunAPI.Services;
+using System.Data;
 
 namespace ProjectPerunAPI.Controllers
 {
@@ -15,34 +17,44 @@ namespace ProjectPerunAPI.Controllers
             _ordersService = ordersService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ResponseModel>> GetOrders()
+        [HttpGet("{filter}")]
+        public async Task<ActionResult<string>> GetOrders(string filter)
         {
-            return await _ordersService.GetOrders();
+            return JsonConvert.SerializeObject(await _ordersService.GetOrders(filter));
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel>> GetOneOrder(int id)
+        [HttpGet("one/{id}")]
+        public async Task<ActionResult<string>> GetOneOrder(int id)
         {
-            return await _ordersService.GetOneOrder(id);
+            return JsonConvert.SerializeObject(await _ordersService.GetOneOrder(id));
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseModel>> UpdateOrder([FromBody] OrderModel orderData)
+        public async Task<ActionResult<string>> UpdateOrder([FromBody] OrderWrapperModel orderData)
         {
-            return await _ordersService.UpdateOrder(orderData);
+            if (orderData == null || orderData.OrderData == null)
+                return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
+            return JsonConvert.SerializeObject(await _ordersService.UpdateOrder(orderData.OrderData));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel>> InsertOrder([FromBody] OrderModel orderData)
+        public async Task<ActionResult<string>> InsertOrder([FromBody] OrderWrapperModel? orderData)
         {
-            return await _ordersService.InsertOrder(orderData);
+            if (orderData == null || orderData.OrderData == null)
+                return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
+            return JsonConvert.SerializeObject(await _ordersService.InsertOrder(orderData.OrderData));
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseModel>> DeleteOrder(int id)
+        public async Task<ActionResult<string>> DeleteOrder(int id)
         {
-            return await _ordersService.DeleteOrder(id);
+            return JsonConvert.SerializeObject(await _ordersService.DeleteOrder(id));
+        }
+
+        [HttpPut("finished")]
+        public async Task<ActionResult<string>> UpdateOrder([FromBody] int orderID)
+        {
+            return JsonConvert.SerializeObject(await _ordersService.SetOrderAsFinished(orderID));
         }
     }
 }

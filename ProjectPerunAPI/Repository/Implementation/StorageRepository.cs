@@ -146,7 +146,8 @@ namespace ProjectPerunAPI.Repository.Implementation
         private DataTable ListToTableMaterialData(List<MaterialTransactionModel> materialData)
         {
             DataTable table = new DataTable();
-            using (var reader = ObjectReader.Create(materialData, "Id", "Name", "Code", "TransactionType", "Quantity", "Price", "ElementID", "Type", "WarehouseID", "LastChange",
+            using (var reader = ObjectReader.Create(materialData, "Id", "Number", "Name", "Code", "TransactionType", "Quantity", 
+            "Price", "ElementID", "Type", "WarehouseID", "LastChange",
             "UserID", "TimeStamp", "Reserved", "OnProject", "BatchID", "ImportBatchNumber"))
             {
                 table.Load(reader);

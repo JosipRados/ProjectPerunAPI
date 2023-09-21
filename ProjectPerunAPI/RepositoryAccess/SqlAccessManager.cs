@@ -31,13 +31,13 @@ namespace ProjectPerunAPI.RepositoryAccess
                 SqlCommand sqlCommand = new SqlCommand(commandText, conn);
                 sqlCommand.CommandType = commandType;
 
-                PostaviParametre(parametri, sqlCommand);
+                SetParameters(parametri, sqlCommand);
                 
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
 
                 dataAdapter.Fill(dataTable);
 
-                VratiVrijednostiParametrima(parametri, sqlCommand);
+                ReturnValueParameters(parametri, sqlCommand);
             }
             catch (Exception ex)
             {
@@ -52,13 +52,13 @@ namespace ProjectPerunAPI.RepositoryAccess
                 SqlCommand sqlCommand = new SqlCommand(commandText, conn);
                 sqlCommand.CommandType = commandType;
 
-                PostaviParametre(parametri, sqlCommand);
+                SetParameters(parametri, sqlCommand);
 
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
 
                 await Task.Run(() => dataAdapter.Fill(dataTable));
 
-                VratiVrijednostiParametrima(parametri, sqlCommand);
+                ReturnValueParameters(parametri, sqlCommand);
             }
             catch (Exception ex)
             {
@@ -81,7 +81,7 @@ namespace ProjectPerunAPI.RepositoryAccess
                 SqlCommand com = new SqlCommand(commandText, conn);
                 com.CommandType = commandType;
 
-                PostaviParametre(parametri, com);
+                SetParameters(parametri, com);
 
                 // ako veza sa bazom nije otvorena, otvori ju
                 if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
@@ -89,7 +89,7 @@ namespace ProjectPerunAPI.RepositoryAccess
 
                 com.ExecuteNonQuery();
 
-                VratiVrijednostiParametrima(parametri, com);
+                ReturnValueParameters(parametri, com);
             }
             catch (Exception ex)
             {
@@ -107,7 +107,7 @@ namespace ProjectPerunAPI.RepositoryAccess
         /// </remarks>
         /// <param name="parametri">Lista parametara koji se koriste za storane procedure.</param>
         /// <param name="com">Sql comanda koja se izvršava.</param>
-        private static void PostaviParametre(DataAccessParameterList parametri, SqlCommand com)
+        private static void SetParameters(DataAccessParameterList parametri, SqlCommand com)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace ProjectPerunAPI.RepositoryAccess
         /// </remarks>
         /// <param name="parametri">Lista parametara koji se koriste za storane procedure.</param>
         /// <param name="com">Sql komanda koja se izvršava.</param>
-        private static void VratiVrijednostiParametrima(DataAccessParameterList parametri, SqlCommand com)
+        private static void ReturnValueParameters(DataAccessParameterList parametri, SqlCommand com)
         {
             try
             {

@@ -3,7 +3,7 @@ using ProjectPerunAPI.RepositoryAccess;
 using static ProjectPerunAPI.RepositoryAccess.TypeParameter;
 using System.Data.SqlClient;
 using System.Data;
-
+using FastMember;
 
 namespace ProjectPerunAPI.Repository.Implementation
 {
@@ -47,13 +47,13 @@ namespace ProjectPerunAPI.Repository.Implementation
             return returnDatabase;
         }
 
-        public async Task<DataTable> InsertUserDatabase(UserModel userData)
+        public async Task<DataTable> InsertUserDatabase(List<UserModel> userData)
         {
             DataTable returnDatabase = new DataTable();
             DataAccessParameterList parameters = new DataAccessParameterList();
-            parameters.ParametarAdd("@UserData", userData, TypeParametar.Structured);
+            parameters.ParametarAdd("@UserData", ListToTableUserData(userData), TypeParametar.Structured);
 
-            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spInsertUser", parameters);
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spInsertUserData", parameters);
             return returnDatabase;
         }
 
@@ -65,6 +65,27 @@ namespace ProjectPerunAPI.Repository.Implementation
 
             await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spDeleteUser", parameters);
             return returnDatabase;
+        }
+
+        public async Task<DataTable> GetUserPasswordDatabase(string username)
+        {
+            DataTable returnDatabase = new DataTable();
+            DataAccessParameterList parameters = new DataAccessParameterList();
+            parameters.ParametarAdd("@Username", username, TypeParametar.NVarChar);
+
+            await SqlAccessManager.SelectDataAsync(_conn, CommandType.StoredProcedure, returnDatabase, "spGetPasswordByUsername", parameters);
+            return returnDatabase;
+        }
+
+        private DataTable ListToTableUserData(List<UserModel> userData)
+        {
+            DataTable table = new DataTable();
+            using (var reader = ObjectReader.Create(userData, "ID", "Username", "Password", "Role",
+            "Name", "Surname", "TimeStamp", "CreatedBy", "HourPrice", "Active"))
+            {
+                table.Load(reader);
+            }
+            return table;
         }
     }
 }

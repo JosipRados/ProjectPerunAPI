@@ -4,10 +4,11 @@ namespace ProjectPerunAPI.Services
 {
     public interface IUsersService
     {
-        Task<ResponseModel> DeleteUser(int id);
-        Task<ResponseModel> GetOneUser(int id);
-        Task<ResponseModel> GetUsers();
-        Task<ResponseModel> InsertUser(UserModel userData);
-        Task<ResponseModel> UpdateUser(UserModel userData);
+        Task<ResponseModelNew> DeleteUser(int id);
+        Task<ResponseModelNew> GetOneUser(int id);
+        Task<ResponseModelNew> GetUsers();
+        Task<ResponseModelNew> InsertUser(List<UserModel>? userData);
+        Task<ResponseModelNew> UpdateUser(UserModel userData);
+        Task<ResponseModelNew> LoginUser(LoginModel loginData);
     }
 }

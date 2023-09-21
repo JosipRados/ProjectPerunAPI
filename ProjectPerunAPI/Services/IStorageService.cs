@@ -5,11 +5,11 @@ namespace ProjectPerunAPI.Services
 {
     public interface IStorageService
     {
-        Task<ResponseModel> DeleteMaterialData(List<MaterialDeleteModel>? materialData);
+        Task<ResponseModelNew> DeleteMaterialData(List<MaterialDeleteModel>? materialData);
         Task<ResponseModelNew> GetAllStorage();
-        Task<ResponseModel> GetOneMaterial(int id);
-        Task<ResponseModel> InsertMaterialData(List<MaterialTransactionModel>? materialData);
-        Task<ResponseModel> UpdateMaterialData(List<MaterialTransactionModel>? materialData);
+        Task<ResponseModelNew> GetOneMaterial(int id);
+        Task<ResponseModelNew> InsertMaterialData(List<MaterialTransactionModel>? materialData);
+        Task<ResponseModelNew> UpdateMaterialData(List<MaterialTransactionModel>? materialData);
         Task<ResponseModelNew> GetLastMaterialNumber();
     }
 }

@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProjectPerunAPI.Models;
 using ProjectPerunAPI.Services;
 using ProjectPerunAPI.Services.Implementation;
+using System.Data;
 
 namespace ProjectPerunAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -17,33 +19,43 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseModel>> GetUsers()
+        public async Task<ActionResult<string>> GetUsers()
         {
-            return await _usersService.GetUsers();
+            return JsonConvert.SerializeObject( await _usersService.GetUsers());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel>> GetOneUser(int id)
+        public async Task<ActionResult<string>> GetOneUser(int id)
         {
-            return await _usersService.GetOneUser(id);
+            return JsonConvert.SerializeObject( await _usersService.GetOneUser(id));
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseModel>> UpdateUser([FromBody] UserModel userData)
+        public async Task<ActionResult<string>> UpdateUser([FromBody] UserModel userData)
         {
-            return await _usersService.UpdateUser(userData);
+            return JsonConvert.SerializeObject(await _usersService.UpdateUser(userData));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel>> InsertUser([FromBody] UserModel userData)
+        public async Task<string> InsertUser([FromBody] UserWrapperModel userData)
         {
-            return await _usersService.InsertUser(userData);
+            if(userData == null || userData.UserData == null)
+                return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
+            return JsonConvert.SerializeObject( await _usersService.InsertUser(userData.UserData));
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseModel>> DeleteUser(int id)
+        public async Task<ActionResult<string>> DeleteUser(int id)
         {
-            return await _usersService.DeleteUser(id);
+            return JsonConvert.SerializeObject( await _usersService.DeleteUser(id));
+        }
+
+        [HttpPut("login")]
+        public async Task<string> LoginUser(LoginModel loginData)
+        {
+            if (loginData == null)
+                return JsonConvert.SerializeObject(new ResponseModelNew(false, "Empty request!", new DataTable()));
+            return JsonConvert.SerializeObject( await _usersService.LoginUser(loginData));
         }
     }
 }

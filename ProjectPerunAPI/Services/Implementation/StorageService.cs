@@ -22,12 +22,12 @@ namespace ProjectPerunAPI.Services.Implementation
             return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> GetOneMaterial(int id)
+        public async Task<ResponseModelNew> GetOneMaterial(int id)
         {
             DataTable resultDatabase = await _storageRepository.GetOneStorageDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to retrieve material data for selected material.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));  
+                return new ResponseModelNew(false, "Unable to retrieve material data for selected material.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);  
         }
 
         public async Task<ResponseModelNew> GetLastMaterialNumber()
@@ -39,7 +39,7 @@ namespace ProjectPerunAPI.Services.Implementation
             return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> UpdateMaterialData(List<MaterialTransactionModel>? materialData)
+        public async Task<ResponseModelNew> UpdateMaterialData(List<MaterialTransactionModel>? materialData)
         {
             int importBatchNumber;
             DataTable returnDatabase;
@@ -66,18 +66,18 @@ namespace ProjectPerunAPI.Services.Implementation
                 returnDatabase = await _storageRepository.UpdateMaterialDatabaseImport(importBatchNumber);
 
                 if (returnDatabase == null || returnDatabase.Rows.Count == 0)
-                    return new ResponseModel(true, "", "");
+                    return new ResponseModelNew(true, "", new DataTable());
                 else
-                    return new ResponseModel(true, "", JsonConvert.SerializeObject(returnDatabase));
+                    return new ResponseModelNew(true, "", returnDatabase);
 
             }
             catch (Exception ex)
             {
-                return new ResponseModel(false, ex.Message, "");
+                return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModel> InsertMaterialData(List<MaterialTransactionModel>? materialData)
+        public async Task<ResponseModelNew> InsertMaterialData(List<MaterialTransactionModel>? materialData)
         {
             int importBatchNumber;
             DataTable returnDatabase;
@@ -104,18 +104,18 @@ namespace ProjectPerunAPI.Services.Implementation
                 returnDatabase = await _storageRepository.InsertMaterialDatabaseImport(importBatchNumber);
 
                 if (returnDatabase == null || returnDatabase.Rows.Count == 0)
-                    return new ResponseModel(true, "", "");
+                    return new ResponseModelNew(true, "", new DataTable());
                 else
-                    return new ResponseModel(true, "", JsonConvert.SerializeObject(returnDatabase));
+                    return new ResponseModelNew(true, "", returnDatabase);
 
             }
             catch(Exception ex)
             {
-                return new ResponseModel(false, ex.Message, "");
+                return new ResponseModelNew(false, ex.Message, new DataTable());
             }
         }
 
-        public async Task<ResponseModel> DeleteMaterialData(List<MaterialDeleteModel>? materialData)
+        public async Task<ResponseModelNew> DeleteMaterialData(List<MaterialDeleteModel>? materialData)
         {
             int importBatchNumber;
             DataTable returnDatabase;
@@ -142,17 +142,22 @@ namespace ProjectPerunAPI.Services.Implementation
                 returnDatabase = await _storageRepository.DeleteMaterialDatabaseImport(importBatchNumber);
 
                 if (returnDatabase == null || returnDatabase.Rows.Count == 0)
-                    return new ResponseModel(true, "", "");
+                    return new ResponseModelNew(true, "", new DataTable());
                 else
-                    return new ResponseModel(true, "", JsonConvert.SerializeObject(returnDatabase));
+                    return new ResponseModelNew(true, "", returnDatabase);
 
-                return new ResponseModel(true, "", "");
+                return new ResponseModelNew(true, "", new DataTable());
 
             }
             catch (Exception ex)
             {
-                return new ResponseModel(false, ex.Message, "");
+                return new ResponseModelNew(false, ex.Message, new DataTable());
             }
+        }
+
+        public async Task<ResponseModelNew> ExportMaterialToOrder(List<OrderMaterialModel> materialData)
+        {
+
         }
     }
 }

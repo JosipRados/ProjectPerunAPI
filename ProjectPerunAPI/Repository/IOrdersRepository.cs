@@ -7,8 +7,9 @@ namespace ProjectPerunAPI.Repository
     {
         Task<DataTable> DeleteOrderDatabase(int id);
         Task<DataTable> GetOneOrderDatabase(int id);
-        Task<DataTable> GetOrdersDatabase();
-        Task<DataTable> InsertOrderDatabase(OrderModel orderData);
-        Task<DataTable> UpdateOrderDatabase(OrderModel orderData);
+        Task<DataTable> GetOrdersDatabase(string filter);
+        Task<DataTable> InsertOrderDatabase(List<OrderModel> orderData);
+        Task<DataTable> UpdateOrderDatabase(List<OrderModel> orderData);
+        Task<DataTable> SetOrderAsFinished(int orderID);
     }
 }

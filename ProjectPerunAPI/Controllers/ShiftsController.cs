@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ProjectPerunAPI.Models;
 using ProjectPerunAPI.Services;
 
@@ -16,33 +17,33 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ResponseModel>> GetShifts()
+        public async Task<ActionResult<string>> GetShifts()
         {
-            return await _shiftsService.GetShifts();
+            return JsonConvert.SerializeObject( await _shiftsService.GetShifts());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel>> GetOneShift(int id)
+        public async Task<ActionResult<string>> GetOneShift(int id)
         {
-            return await _shiftsService.GetOneShift(id);
+            return JsonConvert.SerializeObject(await _shiftsService.GetOneShift(id));
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseModel>> UpdateShift([FromBody] ShiftModel shiftData)
+        public async Task<ActionResult<string>> UpdateShift([FromBody] ShiftModel shiftData)
         {
-            return await _shiftsService.UpdateShift(shiftData);
+            return JsonConvert.SerializeObject(await _shiftsService.UpdateShift(shiftData));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel>> InsertShift([FromBody] ShiftModel shiftData)
+        public async Task<ActionResult<string>> InsertShift([FromBody] ShiftModel shiftData)
         {
-            return await _shiftsService.InsertShift(shiftData);
+            return JsonConvert.SerializeObject(await _shiftsService.InsertShift(shiftData));
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ResponseModel>> DeleteShift(int id)
+        public async Task<ActionResult<string>> DeleteShift(int id)
         {
-            return await _shiftsService.DeleteShift(id);
+            return JsonConvert.SerializeObject(await _shiftsService.DeleteShift(id));
         }
     }
 }

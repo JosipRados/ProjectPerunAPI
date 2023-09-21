@@ -13,49 +13,49 @@ namespace ProjectPerunAPI.Services.Implementation
             _shiftsRepository = shiftsRepository;
         }
 
-        public async Task<ResponseModel> GetShifts()
+        public async Task<ResponseModelNew> GetShifts()
         {
             DataTable resultDatabase;
             resultDatabase = await _shiftsRepository.GetShiftsDatabase();
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get elements from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get elements from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> GetOneShift(int id)
+        public async Task<ResponseModelNew> GetOneShift(int id)
         {
             DataTable resultDatabase;
             resultDatabase = await _shiftsRepository.GetOneShiftDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get Shift " + id + " from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get Shift " + id + " from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> UpdateShift(ShiftModel shiftData)
+        public async Task<ResponseModelNew> UpdateShift(ShiftModel shiftData)
         {
             DataTable resultDatabase;
             resultDatabase = await _shiftsRepository.UpdateShiftDatabase(shiftData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get Shifts from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get Shifts from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> InsertShift(ShiftModel shiftData)
+        public async Task<ResponseModelNew> InsertShift(ShiftModel shiftData)
         {
             DataTable resultDatabase;
             resultDatabase = await _shiftsRepository.InsertShiftDatabase(shiftData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get Shifts from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get Shifts from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> DeleteShift(int id)
+        public async Task<ResponseModelNew> DeleteShift(int id)
         {
             DataTable resultDatabase;
             resultDatabase = await _shiftsRepository.DeleteShiftDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get Shift " + id + " from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get Shift " + id + " from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
     }
 }

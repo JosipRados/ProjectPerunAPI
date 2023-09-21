@@ -8,7 +8,8 @@ namespace ProjectPerunAPI.Repository
         Task<DataTable> DeleteUserDatabase(int id);
         Task<DataTable> GetOneUserDatabase(int id);
         Task<DataTable> GetUsersDatabase();
-        Task<DataTable> InsertUserDatabase(UserModel userData);
+        Task<DataTable> InsertUserDatabase(List<UserModel> userData);
         Task<DataTable> UpdateUserDatabase(UserModel userData);
+        Task<DataTable> GetUserPasswordDatabase(string username);
     }
 }

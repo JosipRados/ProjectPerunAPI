@@ -28,9 +28,9 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseModel>> GetOneMaterial(int id)
+        public async Task<ActionResult<string>> GetOneMaterial(int id)
         {
-            return await _storageService.GetOneMaterial(id);
+            return JsonConvert.SerializeObject(await _storageService.GetOneMaterial(id));
         }
 
         [HttpGet("material-number")]
@@ -40,21 +40,27 @@ namespace ProjectPerunAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ResponseModel>> UpdateMaterial([FromBody] MaterialTransactionWrapperModel materialData)
+        public async Task<ActionResult<string>> UpdateMaterial([FromBody] MaterialTransactionWrapperModel materialData)
         {
-            return await _storageService.UpdateMaterialData(materialData.materialData);
+            return JsonConvert.SerializeObject(await _storageService.UpdateMaterialData(materialData.StorageData));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ResponseModel>> InsertMaterialData([FromBody] MaterialTransactionWrapperModel materialData)
+        public async Task<string> InsertMaterialData([FromBody] MaterialTransactionWrapperModel materialData)
         {
-            return await _storageService.InsertMaterialData(materialData.materialData);
+            return JsonConvert.SerializeObject( await _storageService.InsertMaterialData(materialData.StorageData));
         }
 
         [HttpDelete]
-        public async Task<ActionResult<ResponseModel>> DeleteMaterialData([FromBody] MaterialDeleteWrapperModel materialData)
+        public async Task<string> DeleteMaterialData([FromBody] MaterialDeleteWrapperModel materialData)
         {
-            return await _storageService.DeleteMaterialData(materialData.materialData);
+            return JsonConvert.SerializeObject( await _storageService.DeleteMaterialData(materialData.materialData));
+        }
+
+        [HttpPut("export-to-order")]
+        public async Task<string> ExportMaterialToOrder([FromBody] OrderMaterialWrapperModel materialData)
+        {
+            return JsonConvert.SerializeObject(await _storageService.ExportMaterialToOrder(materialData.OrderMaterialData));
         }
     }
 }

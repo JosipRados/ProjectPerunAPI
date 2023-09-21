@@ -2,6 +2,6 @@
 {
     public class MaterialTransactionWrapperModel
     {
-        public List<MaterialTransactionModel>? materialData { get; set; }
+        public List<MaterialTransactionModel>? StorageData { get; set; }
     }
 }

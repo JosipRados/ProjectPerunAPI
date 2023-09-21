@@ -13,49 +13,58 @@ namespace ProjectPerunAPI.Services.Implementation
             _ordersRepository = ordersRepository;
         }
 
-        public async Task<ResponseModel> GetOrders()
+        public async Task<ResponseModelNew> GetOrders(string filter)
         {
             DataTable resultDatabase;
-            resultDatabase = await _ordersRepository.GetOrdersDatabase();
+            resultDatabase = await _ordersRepository.GetOrdersDatabase(filter);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get elements from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get elements from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> GetOneOrder(int id)
+        public async Task<ResponseModelNew> GetOneOrder(int id)
         {
             DataTable resultDatabase;
             resultDatabase = await _ordersRepository.GetOneOrderDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get order " + id + " from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get order " + id + " from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> UpdateOrder(OrderModel orderData)
+        public async Task<ResponseModelNew> UpdateOrder(List<OrderModel> orderData)
         {
             DataTable resultDatabase;
             resultDatabase = await _ordersRepository.UpdateOrderDatabase(orderData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get orders from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get orders from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> InsertOrder(OrderModel orderData)
+        public async Task<ResponseModelNew> InsertOrder(List<OrderModel> orderData)
         {
             DataTable resultDatabase;
             resultDatabase = await _ordersRepository.InsertOrderDatabase(orderData);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get orders from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get orders from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
 
-        public async Task<ResponseModel> DeleteOrder(int id)
+        public async Task<ResponseModelNew> DeleteOrder(int id)
         {
             DataTable resultDatabase;
             resultDatabase = await _ordersRepository.DeleteOrderDatabase(id);
             if (resultDatabase == null || resultDatabase.Rows.Count == 0)
-                return new ResponseModel(false, "Unable to get order " + id + " from database.", "");
-            return new ResponseModel(true, "", JsonConvert.SerializeObject(resultDatabase));
+                return new ResponseModelNew(false, "Unable to get order " + id + " from database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
+        }
+
+        public async Task<ResponseModelNew> SetOrderAsFinished(int orderID)
+        {
+            DataTable resultDatabase;
+            resultDatabase = await _ordersRepository.SetOrderAsFinished(orderID);
+            if (resultDatabase == null || resultDatabase.Rows.Count == 0)
+                return new ResponseModelNew(false, "Unable to set order " + orderID + "as finished in database.", new DataTable());
+            return new ResponseModelNew(true, "", resultDatabase);
         }
     }
 }
