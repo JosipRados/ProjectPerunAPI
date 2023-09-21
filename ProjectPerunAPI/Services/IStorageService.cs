@@ -11,5 +11,7 @@ namespace ProjectPerunAPI.Services
         Task<ResponseModelNew> InsertMaterialData(List<MaterialTransactionModel>? materialData);
         Task<ResponseModelNew> UpdateMaterialData(List<MaterialTransactionModel>? materialData);
         Task<ResponseModelNew> GetLastMaterialNumber();
+
+        Task<ResponseModelNew> ExportMaterialToOrder(List<OrderMaterialModel> materialData);
     }
 }
